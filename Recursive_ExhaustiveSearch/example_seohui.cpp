@@ -2,37 +2,50 @@
 
 using namespace std;
 
+// --- 코드 6.1
+// 1부터 n 까지의 합을 계산
 int recursiveSum(int num) {
   if (num == 1) return 1;
   return num + recursiveSum(num -1);
 }
+// --- 코드 6.1 
 
-// 0 ~ n 개의 원소 중 네 개를 고르는 모든 경우를 출력
-void pick(int l, int val, int n) {
-  if (l == 5) {
+// --- 코드 6.2 
+// 0 ~ n 개의 원소 중 m 개를 고르는 모든 조합을 찾는 알고리즘
+void pick(int level, int val, int picknum, int num, int* arr) {
+  // final level, print answer
+  if (level == picknum + 1) {
+    for (int k = 0; k < picknum; k++) {
+      cout << arr[k] << " ";
+    }
     cout << endl;
     return;
   }
-  for (int j = n; j < n - 4 + l; j++) {
-    cout << n << " ";
-    pick(l + 1, j + 1, n);
+  // make branch
+  for (int j = val + 1; j <= num - picknum + level; j++) {
+    arr[level - 1] = j;
+    pick(level + 1, j, picknum, num, arr);
   }
 }
 
-void Find(int n) {
+// n : 0 ~ n 
+// pickn : combination of pick pickn
+void Find(int n, int pickn) {
   int level = 1;
-  for (int i = 0; i <= n-3; i++) {
-    cout << i << " ";
-    pick(level + 1, i + 1, n);
+  int* arr = new int[pickn];
+  
+  for (int i = 0; i <= n - pickn + 1; i++) {
+    arr[level - 1] = i;
+    pick(level + 1, i, pickn, n, arr);
   }
 }
-
+// --- 코드 6.2 
 
 int main(void) {
   
   //cout << "sum : "<< recursiveSum(10) << endl;
   cout << "count" << endl;
-  Find(5);
+  Find(5, 4);
 
   return 0;
 }
